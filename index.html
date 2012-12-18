@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+	<title>Emmet for CodeMirror 3</title>
+	<link rel="stylesheet" href="./codemirror/codemirror.css" />
+	<script src="./codemirror/codemirror.js"></script>
+	<script src="./codemirror/xml.js"></script>
+	<script src="./codemirror/css.js"></script>
+	<script src="./codemirror/javascript.js"></script>
+	<script src="./codemirror/htmlmixed.js"></script>
+
+	<script src="./emmet.min.js"></script>
+	
+	<style>
+	.CodeMirror {
+		border: 1px solid black;
+	}
+	
+	.cm-delimit {
+		color: #fa4;
+	}
+	</style>
+</head>
+<body>
+	<h1>Emmet for CodeMirror 3</h1>
+
+	<form><textarea id="code" name="code">
+&lt;html style="color: green"&gt;
+  &lt;!-- this is a comment --&gt;
+  &lt;head&gt;
+    &lt;title&gt;HTML Example&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    The indentation tries to be &lt;em&gt;somewhat &amp;quot;do what
+    I mean&amp;quot;&lt;/em&gt;... but might not match your style.
+  &lt;/body&gt;
+&lt;/html&gt;
+	</textarea></form>
+
+	<script>
+		CodeMirror.fromTextArea(document.getElementById("code"), {
+			mode : "text/html",
+			lineNumbers : true,
+			profile: 'xhtml' /* define Emmet output profile */
+		});
+	</script>
+
+</body>
+</html>
