@@ -1,4 +1,4 @@
-*This plugin is automatically compiled from the [Emmet core](https://github.com/emmetio/emmet). If you want to contribute features or fix bugs, please to this in [plugin source](https://github.com/emmetio/emmet/tree/master/plugins/codemirror2).*
+*This plugin is automatically compiled from the [Emmet core](https://github.com/emmetio/emmet). If you want to contribute features or fix bugs, please do this in [plugin source](https://github.com/emmetio/emmet/tree/master/plugins/codemirror2).*
 
 ******
 
