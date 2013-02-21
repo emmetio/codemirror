@@ -13489,7 +13489,7 @@ emmet.exec(function(require, _) {
 			"input:submit": "<input type=\"submit\" value=\"\" />",
 			"input:s": "input:submit",
 			"input:image": "<input type=\"image\" src=\"\" alt=\"\" />",
-			"input:i": "input:iimage",
+			"input:i": "input:image",
 			"input:button": "<input type=\"button\" value=\"\" />",
 			"input:b": "input:button",
 			"input:reset": "input:button[type=reset]",
