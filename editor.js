@@ -1,5 +1,8 @@
 /**
- * Emmet Editor interface implementation for CodeMirror
+ * Emmet Editor interface implementation for CodeMirror.
+ * Interface is optimized for multiple cursor usage: authors
+ * should run acttion multiple times and update `selectionIndex`
+ * property on each iteration.
  */
 define(['emmet/utils/common', 'emmet/utils/action', 'emmet/assets/resources', 'emmet/assets/tabStops'], function(utils, actionUtils, res, tabStops) {
 	/**
@@ -13,11 +16,11 @@ define(['emmet/utils/common', 'emmet/utils/action', 'emmet/assets/resources', 'e
 		if (arguments.length > 2 && typeof pos !== 'object') {
 			pos = {line: arguments[1], ch: arguments[2]}
 		}
-		return context.indexFromPos(pos);
+		return cm.indexFromPos(pos);
 	}
 
 	/**
-	 * Converts charater indext in text to CM’s internal object representation
+	 * Converts charater index in text to CM’s internal object representation
 	 * @param  {CodeMirror} cm CodeMirror instance
 	 * @param  {Number}     ix Character index in CM document
 	 * @return {Object}
@@ -29,7 +32,7 @@ define(['emmet/utils/common', 'emmet/utils/action', 'emmet/assets/resources', 'e
 	return {
 		context: null,
 		selectionIndex: 0,
-		modeMap = {
+		modeMap: {
 			'text/html': 'html',
 			'application/xml': 'xml',
 			'text/xsl': 'xsl',
@@ -63,7 +66,7 @@ define(['emmet/utils/common', 'emmet/utils/action', 'emmet/assets/resources', 'e
 					end: Math.max(anchor, head)
 				};
 			});
-		}
+		},
 
 		getCaretPos: function() {
 			return this.getSelectionRange().start;
@@ -82,16 +85,30 @@ define(['emmet/utils/common', 'emmet/utils/action', 'emmet/assets/resources', 'e
 		},
 
 		createSelection: function(start, end) {
-			// TODO fix for multiple selections
 			if (typeof end == 'undefined') {
 				end = start;
 			}
 
-			if (start == end) {
-				this.context.setCursor(this.context.posFromIndex(start));
-			} else {
-				this.context.setSelection(this.context.posFromIndex(start), this.context.posFromIndex(end));
-			}
+			var sels = this.selectionList();
+			var cm = this.context;
+			sels[this.selectionIndex] = {start: start, end: end};
+			this.context.setSelections(sels.map(function(sel) {
+				return {
+					head: indexToPos(cm, sel.start),
+					anchor: indexToPos(cm, sel.end)
+				};
+			}));
+		},
+
+		/**
+		 * Returns current selection
+		 * @return {String}
+		 */
+		getSelection: function() {
+			var sel = this.getSelectionRange();
+			sel.start = indexToPos(this.context, sel.start);
+			sel.end = indexToPos(this.context, sel.end);
+			return this.context.getRange(sel.start, sel.end);
 		},
 
 		getCurrentLineRange: function() {
@@ -164,16 +181,6 @@ define(['emmet/utils/common', 'emmet/utils/action', 'emmet/assets/resources', 'e
 		 */
 		prompt: function(title) {
 			return prompt(title);
-		},
-
-		/**
-		 * Returns current selection
-		 * @return {String}
-		 */
-		getSelection: function() {
-			var sel = this.getSelectionRange();
-			return 
-			return this.context.getSelection() || '';
 		},
 
 		/**
