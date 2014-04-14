@@ -1,8 +1,6 @@
-*This plugin is automatically compiled from the [Emmet core](https://github.com/emmetio/emmet). If you want to contribute features or fix bugs, please do this in [plugin source](https://github.com/emmetio/emmet/tree/master/plugins/codemirror2).*
+# Emmet plugin for CodeMirror 4
 
-******
-
-To add Emmet support for CodeMirror2/3 editor, simply add `emmet.js` as a `<script>` tag into your HTML page right after CodeMirror script.
+To add Emmet support for CodeMirror editor, simply add `dist/emmet.js` as a `<script>` tag into your HTML page right after CodeMirror script.
 
 Additionally, you can pass `profile` option into your into CodeMirror's init script to change Emmet’s HTML output style: 
 

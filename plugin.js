@@ -157,6 +157,7 @@ define(['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(editor, e
 	});
 
 	return {
+		emmet: emmet,
 		/**
 		 * Adds new keybindings for Emmet action. The expected format
 		 * of `keymap` object is the same as default `keymap`.
