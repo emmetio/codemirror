@@ -6,9 +6,9 @@ define(['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(editor, e
 	var defaultKeymap = {
 		'Cmd-E': 'expand_abbreviation',
 		'Tab': 'expand_abbreviation_with_tab',
-		'Cmd-D': 'match_pair_outward',
-		'Shift-Cmd-D': 'match_pair_inward',
-		'Cmd-T': 'matching_pair',
+		'Cmd-D': 'balance_outward',
+		'Shift-Cmd-D': 'balance_inward',
+		'Cmd-M': 'matching_pair',
 		'Shift-Cmd-A': 'wrap_with_abbreviation',
 		'Ctrl-Alt-Right': 'next_edit_point',
 		'Ctrl-Alt-Left': 'prev_edit_point',

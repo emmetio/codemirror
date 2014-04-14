@@ -1,6 +1,6 @@
 # Emmet plugin for CodeMirror 4
 
-To add Emmet support for CodeMirror editor, simply add `dist/emmet.js` as a `<script>` tag into your HTML page right after CodeMirror script.
+To add Emmet support for CodeMirror editor, simply add `dist/emmet.js` as a `<script>` tag into your HTML page right after CodeMirror script. This script creates global `emmetPlugin` variable but also can be loaded as Require.JS module.
 
 Additionally, you can pass `profile` option into your into CodeMirror's init script to change Emmet’s HTML output style: 
 
@@ -14,9 +14,9 @@ CodeMirror.fromTextArea(document.getElementById("code"), {
 ```
 
 Available profiles are: _html_, _xhtml_, _xml_, but you can create your own output profile with 
-`emmet.require('profile').create(name, options)`.
+`emmetPlugin.emmet.loadProfiles({name: options})`.
 
-See [profile.js](https://github.com/emmetio/emmet/blob/master/javascript/profile.js#L10)
+See [profile.js](https://github.com/emmetio/emmet/blob/master/lib/assets/profile.js#L30)
 for a list of available options.
 
 ### Default keybindings
@@ -34,14 +34,23 @@ for a list of available options.
 * `Shift-Cmd-Y`: Evaluate Math Expression
 * `Ctrl-Up`: Increment Number by 1
 * `Ctrl-Down`: Decrement Number by 1
-* `Alt-Up`: Increment Number by 0.1
-* `Alt-Down`: Decrement Number by 0.1
-* `Ctrl-Alt-Up`: Increment Number by 10
-* `Ctrl-Alt-Down`: Decrement Number by 10
-* `Cmd-.`: Select Next Item
-* `Cmd-,`: Select Previous Item
+* `Ctrl-Alt-Up`: Increment Number by 0.1
+* `Ctrl-Alt-Down`: Decrement Number by 0.1
+* `Shift-Ctrl-Up`: Increment Number by 10
+* `Shift-Ctrl-Down`: Decrement Number by 10
+* `Shift-Cmd-.`: Select Next Item
+* `Shift-Cmd-,`: Select Previous Item
 * `Cmd-B`: Reflect CSS Value
 
 ### Overriding keybindings
 
-To override default keybindings, simply create global `emmetKeymap` object, the same as [default one](https://github.com/emmetio/emmet/blob/master/plugins/codemirror2/editor.js#L9) but with your own keybindings.
+To override default keybindings, you can call `emmetPlugin.setKeymap(keymap)` method and pass `keymap` object (see [plugin.js](./plugin.js) file for keymap object description). You can also remove default Emmet keybindings by calling `emmetPlugin.clearKeymap()` method.
+
+## Building from source
+
+This plugin uses [gulp.js](http://gulpjs.com) as build tool:
+
+1. Install [Node.JS and NPM](http://nodejs.org).
+2. Install gulp.js: `npm install -g gulp`
+3. Clone this repo and cd to cloned dir:
+4. In cloned repo run `npm install` and `gulp` to build project. The build tool will create `dist/emmet.js` and `dist/emmet.min.js` files.
