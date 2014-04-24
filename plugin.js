@@ -1,7 +1,7 @@
 /**
  * Emmet plugin for CodeMirror
  */
-define(['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(editor, emmet, res) {
+define(['./editor', 'emmet/emmet'], function(editor, emmet) {
 	var mac = /Mac/.test(navigator.platform);
 	var defaultKeymap = {
 		'Cmd-E': 'expand_abbreviation',
@@ -56,10 +56,6 @@ define(['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(editor, e
 		throw CodeMirror.Pass;
 	}
 
-	function isValidSyntax() {
-		return res.hasSyntax(editor.getSyntax());
-	}
-
 	/**
 	 * Emmet action decorator: creates a command function
 	 * for CodeMirror and executes Emmet action as single
@@ -110,23 +106,20 @@ define(['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(editor, e
 	 * successfully
 	 */
 	function runAction(name, cm) {
-		if (name == 'expand_abbreviation_with_tab' && (cm.somethingSelected() || !isValidSyntax())) {
+		if (name == 'expand_abbreviation_with_tab' && (cm.somethingSelected() || !editor.isValidSyntax())) {
 			// pass through Tab key handler if there's a selection
 			return noop();
 		}
 		
-		var success = true;
-		
+		var result = false;
 		try {
-			var result = emmet.run(name, editor);
+			result = emmet.run(name, editor);
 			if (!result && name == 'insert_formatted_line_break_only') {
-				success = false;
+				return noop();
 			}
 		} catch (e) {}
-		
-		if (!success) {
-			return noop();
-		}
+
+		return result;
 	}
 
 	function systemKeybinding(key) {
@@ -158,6 +151,7 @@ define(['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(editor, e
 
 	return {
 		emmet: emmet,
+		editor: editor,
 		/**
 		 * Adds new keybindings for Emmet action. The expected format
 		 * of `keymap` object is the same as default `keymap`.

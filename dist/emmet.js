@@ -18228,6 +18228,14 @@ define('editor',['emmet/utils/common', 'emmet/utils/action', 'emmet/assets/resou
 		 */
 		getFilePath: function() {
 			return location.href;
+		},
+
+		/**
+		 * Check if current editor syntax is valid, e.g. is supported by Emmet
+		 * @return {Boolean}
+		 */
+		isValidSyntax: function() {
+			return res.hasSyntax(this.getSyntax());
 		}
 	};
 });
@@ -22437,7 +22445,7 @@ define('emmet/emmet',['require','exports','module','lodash','./utils/common','./
 /**
  * Emmet plugin for CodeMirror
  */
-define('plugin',['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(editor, emmet, res) {
+define('plugin',['./editor', 'emmet/emmet'], function(editor, emmet) {
 	var mac = /Mac/.test(navigator.platform);
 	var defaultKeymap = {
 		'Cmd-E': 'expand_abbreviation',
@@ -22492,10 +22500,6 @@ define('plugin',['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(
 		throw CodeMirror.Pass;
 	}
 
-	function isValidSyntax() {
-		return res.hasSyntax(editor.getSyntax());
-	}
-
 	/**
 	 * Emmet action decorator: creates a command function
 	 * for CodeMirror and executes Emmet action as single
@@ -22546,23 +22550,20 @@ define('plugin',['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(
 	 * successfully
 	 */
 	function runAction(name, cm) {
-		if (name == 'expand_abbreviation_with_tab' && (cm.somethingSelected() || !isValidSyntax())) {
+		if (name == 'expand_abbreviation_with_tab' && (cm.somethingSelected() || !editor.isValidSyntax())) {
 			// pass through Tab key handler if there's a selection
 			return noop();
 		}
 		
-		var success = true;
-		
+		var result = false;
 		try {
-			var result = emmet.run(name, editor);
+			result = emmet.run(name, editor);
 			if (!result && name == 'insert_formatted_line_break_only') {
-				success = false;
+				return noop();
 			}
 		} catch (e) {}
-		
-		if (!success) {
-			return noop();
-		}
+
+		return result;
 	}
 
 	function systemKeybinding(key) {
@@ -22594,6 +22595,7 @@ define('plugin',['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(
 
 	return {
 		emmet: emmet,
+		editor: editor,
 		/**
 		 * Adds new keybindings for Emmet action. The expected format
 		 * of `keymap` object is the same as default `keymap`.
@@ -48648,4 +48650,4 @@ define('plugin',['./editor', 'emmet/emmet', 'emmet/assets/resources'], function(
 			"keywords": ""
 		}
 	}
-}});return require('plugin');}));
+}});var plugin = require('plugin');plugin.require = require;plugin.define = define;return plugin;}));

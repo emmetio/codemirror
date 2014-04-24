@@ -189,6 +189,14 @@ define(['emmet/utils/common', 'emmet/utils/action', 'emmet/assets/resources', 'e
 		 */
 		getFilePath: function() {
 			return location.href;
+		},
+
+		/**
+		 * Check if current editor syntax is valid, e.g. is supported by Emmet
+		 * @return {Boolean}
+		 */
+		isValidSyntax: function() {
+			return res.hasSyntax(this.getSyntax());
 		}
 	};
 });

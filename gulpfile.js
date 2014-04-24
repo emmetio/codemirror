@@ -25,7 +25,9 @@ gulp.task('default', function() {
 		},
 		wrap: {
 			start: '(function (root, factory) {if (typeof define === "function" && define.amd) {define(factory);} else {root.emmetPlugin = factory();}}(this, function () {',
-			end: ';' + loadData + 'return require(\'plugin\');}));'
+			end: ';' + loadData + 
+			'var plugin = require(\'plugin\');plugin.require = require;plugin.define = define;' + 
+			'return plugin;}));'
 		}
 	})
 	.pipe(gulp.dest('./dist'))
