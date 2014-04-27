@@ -35,3 +35,20 @@ gulp.task('default', function() {
 	.pipe(uglify())
 	.pipe(gulp.dest('./dist'));
 });
+
+gulp.task('plugin', function() {
+	return requirejs({
+		baseUrl: './',
+		name: 'vendor/almond',
+		include: ['./shim', './plugin'],
+		out: 'emmetPlugin.js',
+		wrap: {
+			start: '(function (root, factory) {if (typeof define === "function" && define.amd) {define(factory);} else {root.emmetPlugin = factory();}}(this, function () {',
+			end: ';return require(\'plugin\');}));'
+		}
+	})
+	.pipe(gulp.dest('./dist'))
+	.pipe(rename('emmetPlugin.min.js'))
+	.pipe(uglify())
+	.pipe(gulp.dest('./dist'));
+});

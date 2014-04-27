@@ -37,7 +37,9 @@ define(['emmet/utils/common', 'emmet/utils/action', 'emmet/assets/resources', 'e
 			'application/xml': 'xml',
 			'text/xsl': 'xsl',
 			'text/css': 'css',
-			'text/x-less': 'less'
+			'text/x-less': 'less',
+			'text/x-scss': 'scss',
+			'text/x-sass': 'sass'
 		},
 
 		setupContext: function(ctx, selIndex) {
