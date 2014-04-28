@@ -18084,7 +18084,9 @@ define('editor',['emmet/utils/common', 'emmet/utils/action', 'emmet/assets/resou
 			'application/xml': 'xml',
 			'text/xsl': 'xsl',
 			'text/css': 'css',
-			'text/x-less': 'less'
+			'text/x-less': 'less',
+			'text/x-scss': 'scss',
+			'text/x-sass': 'sass'
 		},
 
 		setupContext: function(ctx, selIndex) {
@@ -22447,7 +22449,9 @@ define('emmet/emmet',['require','exports','module','lodash','./utils/common','./
 			_.each(utils.parseJSON(profiles), function(options, name) {
 				profile.create(name, normalizeProfile(options));
 			});
-		}
+		},
+
+		require: require
 	};
 });
 /**
