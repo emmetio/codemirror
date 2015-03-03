@@ -25,13 +25,11 @@
   },
   "homepage": "https://github.com/emmetio/codemirror",
   "dependencies": {
-    "emmet": "^1.1.2"
+    "emmet": "^1.2.2"
   },
   "devDependencies": {
-    "gulp": "^3.6.0",
-    "requirejs": "^2.1.11",
-    "gulp-uglify": "^0.2.1",
-    "gulp-requirejs": "^0.1.3",
-    "gulp-rename": "^1.2.0"
+    "codemirror": "^5.0.0",
+    "gulp": "^3.8.11",
+    "js-bundler": "git+https://github.com/sergeche/js-bundler.git№v1.0.0"
   }
 }
