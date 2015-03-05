@@ -4,7 +4,8 @@
   "description": "Emmet plugin for CodeMirror",
   "main": "./dist/emmet.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "./node_modules/.bin/gulp"
   },
   "repository": {
     "type": "git",
