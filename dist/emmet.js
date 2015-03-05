@@ -44403,7 +44403,7 @@ var EmmetEditor = _interopRequire(require("./editor"));
 
 var emmet = _interopRequire(require("./emmet"));
 
-var defaultKeymap = systemKeymap({
+var defaultKeymap = {
 	"Cmd-E": "emmet.expand_abbreviation",
 	Tab: "emmet.expand_abbreviation_with_tab",
 	"Cmd-D": "emmet.balance_outward",
@@ -44431,7 +44431,7 @@ var defaultKeymap = systemKeymap({
 	"Cmd-B": "emmet.reflect_css_value",
 
 	Enter: "emmet.insert_formatted_line_break_only"
-});
+};
 
 // actions that should be performed in single selection mode
 var singleSelectionActions = ["prev_edit_point", "next_edit_point", "merge_lines", "reflect_css_value", "select_next_item", "select_previous_item", "wrap_with_abbreviation", "update_tag", "insert_formatted_line_break_only"];
@@ -44456,6 +44456,7 @@ if (CodeMirror.defineOption) {
 function main(cm) {
 	var keymap = arguments[1] === undefined ? defaultKeymap : arguments[1];
 
+	keymap = systemKeymap(keymap);
 	cm.__emmetKeymap = keymap;
 	cm.addKeyMap(keymap);
 	return cm;

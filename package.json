@@ -1,8 +1,8 @@
 {
   "name": "emmet-codemirror",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Emmet plugin for CodeMirror",
-  "main": "./plugin.js",
+  "main": "./dist/emmet.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
