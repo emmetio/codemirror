@@ -54,6 +54,8 @@ emmetCodeMirror(editor, {
 
 See [`defaultKeymap`](/plugin.js#L7) for available actions. The default keymap is exposed as `emmetCodeMirror.defaultKeymap` property.
 
+*NB:* The `Cmd` key will be automatically replaced with `Ctrl` on non-OSX platforms.
+
 ## Building from source
 
 This plugin uses [gulp.js](http://gulpjs.com) as build tool:
