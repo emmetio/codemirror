@@ -2,12 +2,12 @@
 <html>
 <head>
 	<title>Emmet for CodeMirror 4</title>
-	<link rel="stylesheet" href="./vendor/codemirror/v4/codemirror.css" />
-	<script src="./vendor/codemirror/v4/codemirror.js"></script>
-	<script src="./vendor/codemirror/v4/xml.js"></script>
-	<script src="./vendor/codemirror/v4/css.js"></script>
-	<script src="./vendor/codemirror/v4/htmlmixed.js"></script>
-	<script src="./node_modules/requirejs/require.js"></script>
+	<link rel="stylesheet" href="./node_modules/codemirror/lib/codemirror.css" />
+	<script src="./node_modules/codemirror/lib/codemirror.js"></script>
+	<script src="./node_modules/codemirror/mode/xml/xml.js"></script>
+	<script src="./node_modules/codemirror/mode/css/css.js"></script>
+	<script src="./node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="./dist/plugin.js"></script>
 	
 	<style>
 	.CodeMirror {
@@ -36,33 +36,12 @@
 	</textarea></form>
 
 	<script>
-		CodeMirror.fromTextArea(document.getElementById("code"), {
+		var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
 			mode : "text/html",
 			lineNumbers : true,
 			profile: 'xhtml' /* define Emmet output profile */
 		});
-
-		requirejs.config({
-			baseUrl: './',
-			paths: {
-				emmet: 'node_modules/emmet/lib',
-				lodash: 'node_modules/emmet/node_modules/lodash/lodash'
-			}
-		});
-
-		requirejs(['./plugin', 'emmet/emmet'], function(plugin, emmet) {
-			var loadJSON = function(url) {
-				var xhr = new XMLHttpRequest();
-				xhr.open('GET', url, false);
-				xhr.send(null);
-				return JSON.parse(xhr.responseText);
-			};
-
-			emmet.loadUserData({
-				snippets: loadJSON('node_modules/emmet/lib/snippets.json'),
-				caniuse: loadJSON('node_modules/emmet/lib/caniuse.json')
-			});
-		});
+		emmetCodeMirror(editor);
 	</script>
 </body>
 </html>
