@@ -1,20 +1,19 @@
-# Emmet plugin for CodeMirror 4
+# Emmet plugin for CodeMirror 4.x+
 
-To add Emmet support for CodeMirror editor, simply add `dist/emmet.js` as a `<script>` tag into your HTML page right after CodeMirror script. This script creates global `emmetPlugin` variable but also can be loaded as Require.JS module.
-
-Additionally, you can pass `profile` option into your into CodeMirror's init script to change Emmet’s HTML output style: 
+To add Emmet support for CodeMirror editor, simply add `dist/emmet.js` as a `<script>` tag into your HTML page right after CodeMirror script. This script creates global `emmetCodeMirror` function but also can be loaded as Require.JS module. You should pass CodeMirror editor instance to `emmetCodeMirror()` to add Emmet support.
 
 ```js
-CodeMirror.fromTextArea(document.getElementById("code"), {
+var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
 	mode : 'text/html',
 	
 	// define Emmet output profile
 	profile: 'xhtml'
 });
+emmetCodeMirror(editor);
 ```
 
 Available profiles are: _html_, _xhtml_, _xml_, but you can create your own output profile with 
-`emmetPlugin.emmet.loadProfiles({name: options})`.
+`emmetCodeMirror.emmet.loadProfiles({name: options})`.
 
 See [profile.js](https://github.com/emmetio/emmet/blob/master/lib/assets/profile.js#L30)
 for a list of available options.
@@ -44,13 +43,22 @@ for a list of available options.
 
 ### Overriding keybindings
 
-To override default keybindings, you can call `emmetPlugin.setKeymap(keymap)` method and pass `keymap` object (see [plugin.js](./plugin.js) file for keymap object description). You can also remove default Emmet keybindings by calling `emmetPlugin.clearKeymap()` method.
+The `emmetCodeMirror()` function simply adds default Emmet action keybindings to editor instance. If you want your own keybindings or disable some of them, simply pass keymap (object) as second argument to `emmetCodeMirror()` method:
+
+```js
+emmetCodeMirror(editor, {
+    'Tab': 'emmet.expand_abbreviation_with_tab',
+    'Cmd-Alt-B': 'emmet.balance_outward'
+});
+```
+
+See [`defaultKeymap`](/plugin.js#L7) for available actions. The default keymap is exposed as `emmetCodeMirror.defaultKeymap` property.
 
 ## Building from source
 
 This plugin uses [gulp.js](http://gulpjs.com) as build tool:
 
 1. Install [Node.JS and NPM](http://nodejs.org).
-2. Install gulp.js: `npm install -g gulp`
-3. Clone this repo and cd to cloned dir:
-4. In cloned repo run `npm install` and `gulp` to build project. The build tool will create `dist/emmet.js` and `dist/emmet.min.js` files.
+2. Install Gulp.js: `npm install -g gulp`
+3. Clone this repo and `cd` to cloned dir:
+4. In cloned repo run `npm install` and `gulp` to build project. The build tool will create `dist/emmet.js` file.

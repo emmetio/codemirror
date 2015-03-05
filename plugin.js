@@ -4,7 +4,7 @@
 import EmmetEditor from './editor';
 import emmet from './emmet';
 
-var defaultKeymap = systemKeymap({
+var defaultKeymap = {
 	'Cmd-E': 'emmet.expand_abbreviation',
 	'Tab': 'emmet.expand_abbreviation_with_tab',
 	'Cmd-D': 'emmet.balance_outward',
@@ -32,7 +32,7 @@ var defaultKeymap = systemKeymap({
 	'Cmd-B': 'emmet.reflect_css_value',
 	
 	'Enter': 'emmet.insert_formatted_line_break_only'
-});
+};
 
 // actions that should be performed in single selection mode
 var singleSelectionActions = [
@@ -67,6 +67,7 @@ if (CodeMirror.defineOption) {
  * @param  {Object} keymap
  */
 export default function main(cm, keymap=defaultKeymap) {
+	keymap = systemKeymap(keymap);
 	cm.__emmetKeymap = keymap;
 	cm.addKeyMap(keymap);
 	return cm;
