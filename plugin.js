@@ -41,26 +41,6 @@ var singleSelectionActions = [
 	'wrap_with_abbreviation', 'update_tag', 'insert_formatted_line_break_only'
 ];
 
-// setup default Emmet actions
-Object.keys(defaultKeymap).forEach(key => {
-	var command = defaultKeymap[key] 
-	var action = command.replace(/^emmet\./, '');
-
-	if (!CodeMirror.commands[command]) {
-		CodeMirror.commands[command] = ~singleSelectionActions.indexOf(action)
-			? actionDecorator(action)
-			: multiSelectionActionDecorator(action);
-	}
-});
-
-// add “profile” property to CodeMirror defaults so in won’t be lost
-// then CM instance is instantiated with “profile” property
-if (CodeMirror.defineOption) {
-	CodeMirror.defineOption('profile', 'html');
-} else {
-	CodeMirror.defaults.profile = 'html';
-}
-
 /**
  * Setup Emmet on given CodeMirror editor instance
  * @param  {CodeMirror} cm
@@ -83,6 +63,31 @@ main.dispose = function(cm) {
 main.defaultKeymap = defaultKeymap;
 main.systemKeymap = systemKeymap;
 main.emmet = emmet;
+main.setup = function(CodeMirror) {
+	// setup default Emmet actions
+	Object.keys(defaultKeymap).forEach(key => {
+		var command = defaultKeymap[key] 
+		var action = command.replace(/^emmet\./, '');
+
+		if (!CodeMirror.commands[command]) {
+			CodeMirror.commands[command] = ~singleSelectionActions.indexOf(action)
+				? actionDecorator(action)
+				: multiSelectionActionDecorator(action);
+		}
+	});
+
+	// add “profile” property to CodeMirror defaults so in won’t be lost
+	// then CM instance is instantiated with “profile” property
+	if (CodeMirror.defineOption) {
+		CodeMirror.defineOption('profile', 'html');
+	} else {
+		CodeMirror.defaults.profile = 'html';
+	}
+};
+
+if (typeof CodeMirror !== 'undefined') {
+	main.setup(CodeMirror);
+}
 
 function noop() {
 	if (CodeMirror.version >= '3.1') {

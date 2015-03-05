@@ -44435,24 +44435,6 @@ var defaultKeymap = {
 
 // actions that should be performed in single selection mode
 var singleSelectionActions = ["prev_edit_point", "next_edit_point", "merge_lines", "reflect_css_value", "select_next_item", "select_previous_item", "wrap_with_abbreviation", "update_tag", "insert_formatted_line_break_only"];
-
-// setup default Emmet actions
-Object.keys(defaultKeymap).forEach(function (key) {
-	var command = defaultKeymap[key];
-	var action = command.replace(/^emmet\./, "");
-
-	if (!CodeMirror.commands[command]) {
-		CodeMirror.commands[command] = ~singleSelectionActions.indexOf(action) ? actionDecorator(action) : multiSelectionActionDecorator(action);
-	}
-});
-
-// add “profile” property to CodeMirror defaults so in won’t be lost
-// then CM instance is instantiated with “profile” property
-if (CodeMirror.defineOption) {
-	CodeMirror.defineOption("profile", "html");
-} else {
-	CodeMirror.defaults.profile = "html";
-}
 function main(cm) {
 	var keymap = arguments[1] === undefined ? defaultKeymap : arguments[1];
 
@@ -44472,6 +44454,29 @@ main.dispose = function (cm) {
 main.defaultKeymap = defaultKeymap;
 main.systemKeymap = systemKeymap;
 main.emmet = emmet;
+main.setup = function (CodeMirror) {
+	// setup default Emmet actions
+	Object.keys(defaultKeymap).forEach(function (key) {
+		var command = defaultKeymap[key];
+		var action = command.replace(/^emmet\./, "");
+
+		if (!CodeMirror.commands[command]) {
+			CodeMirror.commands[command] = ~singleSelectionActions.indexOf(action) ? actionDecorator(action) : multiSelectionActionDecorator(action);
+		}
+	});
+
+	// add “profile” property to CodeMirror defaults so in won’t be lost
+	// then CM instance is instantiated with “profile” property
+	if (CodeMirror.defineOption) {
+		CodeMirror.defineOption("profile", "html");
+	} else {
+		CodeMirror.defaults.profile = "html";
+	}
+};
+
+if (typeof CodeMirror !== "undefined") {
+	main.setup(CodeMirror);
+}
 
 function noop() {
 	if (CodeMirror.version >= "3.1") {
