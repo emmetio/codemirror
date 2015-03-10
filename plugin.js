@@ -63,6 +63,7 @@ main.dispose = function(cm) {
 main.defaultKeymap = defaultKeymap;
 main.systemKeymap = systemKeymap;
 main.emmet = emmet;
+main.EmmetEditor = EmmetEditor;
 main.setup = function(CodeMirror) {
 	// setup default Emmet actions
 	Object.keys(defaultKeymap).forEach(key => {
