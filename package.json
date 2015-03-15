@@ -1,6 +1,6 @@
 {
   "name": "emmet-codemirror",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Emmet plugin for CodeMirror",
   "main": "./dist/emmet.js",
   "scripts": {
