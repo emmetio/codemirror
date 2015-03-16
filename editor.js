@@ -131,8 +131,15 @@ export default class EmmetEditor {
 	}
 
 	getSyntax() {
-		var syntax = this.context.getOption('mode');
-		return modeMap[syntax] || emmet.utils.action.detectSyntax(this, syntax);
+		var editor = this.context;
+		var pos = editor.posFromIndex(this.getCaretPos());
+		var mode = editor.getModeAt(editor.getCursor());
+		var syntax = mode.name;
+		if (syntax === 'xml' && mode.configuration) {
+			syntax = mode.configuration;
+		}
+
+		return syntax || emmet.utils.action.detectSyntax(this, syntax);
 	}
 
 	/**

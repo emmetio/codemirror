@@ -170,8 +170,15 @@ var EmmetEditor = (function () {
 		},
 		getSyntax: {
 			value: function getSyntax() {
-				var syntax = this.context.getOption("mode");
-				return modeMap[syntax] || emmet.utils.action.detectSyntax(this, syntax);
+				var editor = this.context;
+				var pos = editor.posFromIndex(this.getCaretPos());
+				var mode = editor.getModeAt(editor.getCursor());
+				var syntax = mode.name;
+				if (syntax === "xml" && mode.configuration) {
+					syntax = mode.configuration;
+				}
+
+				return syntax || emmet.utils.action.detectSyntax(this, syntax);
 			}
 		},
 		getProfileName: {
@@ -32471,6 +32478,7 @@ define(function(require, exports, module) {
 		require: require,
 
 		// expose some useful data for plugin authors
+		actions: actions,
 		file: file,
 		preferences: preferences,
 		resources: resources,
@@ -44495,9 +44503,9 @@ main.emmet = emmet;
 main.EmmetEditor = EmmetEditor;
 main.setup = function (CodeMirror) {
 	// setup default Emmet actions
-	Object.keys(defaultKeymap).forEach(function (key) {
-		var command = defaultKeymap[key];
-		var action = command.replace(/^emmet\./, "");
+	emmet.actions.getList().forEach(function (obj) {
+		var action = obj.name;
+		var command = "emmet." + action;
 
 		if (!CodeMirror.commands[command]) {
 			CodeMirror.commands[command] = ~singleSelectionActions.indexOf(action) ? actionDecorator(action) : multiSelectionActionDecorator(action);
@@ -44585,7 +44593,9 @@ function runAction(name, editor) {
 		if (!result && name == "insert_formatted_line_break_only") {
 			return noop();
 		}
-	} catch (e) {}
+	} catch (e) {
+		console.error(e);
+	}
 
 	return result;
 }

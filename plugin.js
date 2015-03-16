@@ -66,9 +66,9 @@ main.emmet = emmet;
 main.EmmetEditor = EmmetEditor;
 main.setup = function(CodeMirror) {
 	// setup default Emmet actions
-	Object.keys(defaultKeymap).forEach(key => {
-		var command = defaultKeymap[key] 
-		var action = command.replace(/^emmet\./, '');
+	emmet.actions.getList().forEach(obj => {
+		var action = obj.name;
+		var command = 'emmet.' + action;
 
 		if (!CodeMirror.commands[command]) {
 			CodeMirror.commands[command] = ~singleSelectionActions.indexOf(action)
@@ -156,7 +156,9 @@ function runAction(name, editor) {
 		if (!result && name == 'insert_formatted_line_break_only') {
 			return noop();
 		}
-	} catch (e) {}
+	} catch (e) {
+		console.error(e);
+	}
 
 	return result;
 }
