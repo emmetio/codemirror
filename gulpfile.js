@@ -4,7 +4,7 @@ var jsBundler = require('js-bundler');
 
 gulp.task('js', function() {
 	return gulp.src('./plugin.js')
-		.pipe(jsBundler({standalone: 'emmetCodeMirror'}))
+		.pipe(jsBundler({standalone: 'emmetCodeMirror', detectGlobals: false}))
 		.pipe(rename('emmet.js'))
 		.pipe(gulp.dest('./dist'));
 });
