@@ -297,7 +297,7 @@ ciu.load(db, true);
  */
 var res = require('../lib/assets/resources');
 var snippets = require('../lib/snippets.json');
-res.setVocabulary(snippets, true);
+res.setVocabulary(snippets, 'system');
 
 },{"../lib/assets/resources":31,"../lib/snippets.json":67}],5:[function(require,module,exports){
 /**
@@ -32474,6 +32474,7 @@ define(function(require, exports, module) {
 		require: require,
 
 		// expose some useful data for plugin authors
+		actions: actions,
 		file: file,
 		preferences: preferences,
 		resources: resources,
@@ -38808,6 +38809,7 @@ module.exports={
 			"d:n": "display:none;",
 			"d:b": "display:block;",
 			"d:f": "display:flex;",
+			"d:if": "display:inline-flex;",
 			"d:i": "display:inline;",
 			"d:ib": "display:inline-block;",
 			"d:ib+": "display: inline-block;\n*display: inline;\n*zoom: 1;",
@@ -39313,6 +39315,47 @@ module.exports={
 			"cur:m": "cursor:move;",
 			"cur:p": "cursor:pointer;",
 			"cur:t": "cursor:text;",
+			"fxd": "flex-direction:|;",
+			"fxd:r": "flex-direction:row;",
+			"fxd:rr": "flex-direction:row-reverse;",
+			"fxd:c": "flex-direction:column;",
+			"fxd:cr": "flex-direction:column-reverse;",
+			"fxw": "flex-wrap: |;",
+			"fxw:n": "flex-wrap:nowrap;",
+			"fxw:w": "flex-wrap:wrap;",
+			"fxw:wr": "flex-wrap:wrap-reverse;",
+			"fxf": "flex-flow:|;",
+			"jc": "justify-content:|;",
+			"jc:fs": "justify-content:flex-start;",
+			"jc:fe": "justify-content:flex-end;",
+			"jc:c": "justify-content:center;",
+			"jc:sb": "justify-content:space-between;",
+			"jc:sa": "justify-content:space-around;",
+			"ai": "align-items:|;",
+			"ai:fs": "align-items:flex-start;",
+			"ai:fe": "align-items:flex-end;",
+			"ai:c": "align-items:center;",
+			"ai:b": "align-items:baseline;",
+			"ai:s": "align-items:stretch;",
+			"ac": "align-content:|;",
+			"ac:fs": "align-content:flex-start;",
+			"ac:fe": "align-content:flex-end;",
+			"ac:c": "align-content:center;",
+			"ac:sb": "align-content:space-between;",
+			"ac:sa": "align-content:space-around;",
+			"ac:s": "align-content:stretch;",
+			"ord": "order:|;",
+			"fxg": "flex-grow:|;",
+			"fxsh": "flex-shrink:|;",
+			"fxb": "flex-basis:|;",
+			"fx": "flex:|;",
+			"as": "align-self:|;",
+			"as:a": "align-self:auto;",
+			"as:fs": "align-self:flex-start;",
+			"as:fe": "align-self:flex-end;",
+			"as:c": "align-self:center;",
+			"as:b": "align-self:baseline;",
+			"as:s": "align-self:stretch;",
 			"pgbb": "page-break-before:|;",
 			"pgbb:au": "page-break-before:auto;",
 			"pgbb:al": "page-break-before:always;",
