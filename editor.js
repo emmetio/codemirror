@@ -20,12 +20,6 @@ export default class EmmetEditor {
 	constructor(ctx, selIndex=0) {
 		this.context = ctx;
 		this.selectionIndex = selIndex || 0;
-		var indentation = '\t';
-		if (!ctx.getOption('indentWithTabs')) {
-			indentation = emmet.utils.common.repeatString(' ', ctx.getOption('indentUnit'));
-		}
-		
-		emmet.resources.setVariable('indentation', indentation);
 	}
 
 	/**
@@ -109,11 +103,14 @@ export default class EmmetEditor {
 			start = 0;
 		}
 		
+		// normalize indentation according to editor preferences
+		value = this.normalize(value);
+
 		// indent new value
 		if (!noIndent) {
 			value = emmet.utils.common.padString(value, emmet.utils.common.getLinePaddingFromPosition(this.getContent(), start));
 		}
-		
+
 		// find new caret position
 		var tabstopData = emmet.tabStops.extract(value, {escape: ch => ch});
 		value = tabstopData.text;
@@ -124,6 +121,24 @@ export default class EmmetEditor {
 
 		this.context.replaceRange(value, indexToPos(this.context, start), indexToPos(this.context, end));
 		this.createSelection(firstTabStop.start, firstTabStop.end);
+	}
+
+	/**
+	 * Normalizes string indentation in given string
+	 * according to editor preferences
+	 * @param  {String} str
+	 * @return {String}
+	 */
+	normalize(str) {
+		var indent = '\t';
+		var ctx = this.context;
+		if (!ctx.getOption('indentWithTabs')) {
+			indent = emmet.utils.common.repeatString(' ', ctx.getOption('indentUnit'));
+		}
+
+		return emmet.utils.editor.normalize(str, {
+			indentation: indent
+		});
 	}
 
 	getContent() {

@@ -39,12 +39,6 @@ var EmmetEditor = (function () {
 
 		this.context = ctx;
 		this.selectionIndex = selIndex || 0;
-		var indentation = "\t";
-		if (!ctx.getOption("indentWithTabs")) {
-			indentation = emmet.utils.common.repeatString(" ", ctx.getOption("indentUnit"));
-		}
-
-		emmet.resources.setVariable("indentation", indentation);
 	}
 
 	_createClass(EmmetEditor, {
@@ -144,6 +138,9 @@ var EmmetEditor = (function () {
 					start = 0;
 				}
 
+				// normalize indentation according to editor preferences
+				value = this.normalize(value);
+
 				// indent new value
 				if (!noIndent) {
 					value = emmet.utils.common.padString(value, emmet.utils.common.getLinePaddingFromPosition(this.getContent(), start));
@@ -161,6 +158,27 @@ var EmmetEditor = (function () {
 
 				this.context.replaceRange(value, indexToPos(this.context, start), indexToPos(this.context, end));
 				this.createSelection(firstTabStop.start, firstTabStop.end);
+			}
+		},
+		normalize: {
+
+			/**
+    * Normalizes string indentation in given string
+    * according to editor preferences
+    * @param  {String} str
+    * @return {String}
+    */
+
+			value: function normalize(str) {
+				var indent = "\t";
+				var ctx = this.context;
+				if (!ctx.getOption("indentWithTabs")) {
+					indent = emmet.utils.common.repeatString(" ", ctx.getOption("indentUnit"));
+				}
+
+				return emmet.utils.editor.normalize(str, {
+					indentation: indent
+				});
 			}
 		},
 		getContent: {
@@ -299,7 +317,7 @@ var res = require('../lib/assets/resources');
 var snippets = require('../lib/snippets.json');
 res.setVocabulary(snippets, 'system');
 
-},{"../lib/assets/resources":31,"../lib/snippets.json":67}],5:[function(require,module,exports){
+},{"../lib/assets/resources":31,"../lib/snippets.json":68}],5:[function(require,module,exports){
 /**
  * HTML pair matching (balancing) actions
  * @constructor
@@ -596,7 +614,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/htmlMatcher":26,"../assets/range":30,"../editTree/css":37,"../utils/action":69,"../utils/common":72,"../utils/cssSections":73,"../utils/editor":74}],6:[function(require,module,exports){
+},{"../assets/htmlMatcher":26,"../assets/range":30,"../editTree/css":37,"../utils/action":70,"../utils/common":73,"../utils/cssSections":74,"../utils/editor":75}],6:[function(require,module,exports){
 /**
  * Encodes/decodes image under cursor to/from base64
  * @param {IEmmetEditor} editor
@@ -736,7 +754,7 @@ define(function(require, exports, module) {
 	};
 });
 
-},{"../plugin/file":62,"../utils/action":69,"../utils/base64":70,"../utils/editor":74}],7:[function(require,module,exports){
+},{"../plugin/file":63,"../utils/action":70,"../utils/base64":71,"../utils/editor":75}],7:[function(require,module,exports){
 /**
  * Move between next/prev edit points. 'Edit points' are places between tags 
  * and quotes of empty attributes in html
@@ -908,7 +926,7 @@ define(function(require, exports, module) {
 	};
 });
 
-},{"../assets/range":30,"../utils/action":69,"../utils/common":72,"../utils/math":75}],9:[function(require,module,exports){
+},{"../assets/range":30,"../utils/action":70,"../utils/common":73,"../utils/math":76}],9:[function(require,module,exports){
 /**
  * 'Expand abbreviation' editor action: extracts abbreviation from current caret 
  * position and replaces it with formatted output. 
@@ -1098,7 +1116,7 @@ define(function(require, exports, module) {
 		findAbbreviation: findAbbreviation
 	};
 });
-},{"../assets/handlerList":25,"../assets/preferences":28,"../assets/range":30,"../parser/abbreviation":54,"../resolver/cssGradient":64,"../utils/action":69,"../utils/common":72,"../utils/editor":74}],10:[function(require,module,exports){
+},{"../assets/handlerList":25,"../assets/preferences":28,"../assets/range":30,"../parser/abbreviation":55,"../resolver/cssGradient":65,"../utils/action":70,"../utils/common":73,"../utils/editor":75}],10:[function(require,module,exports){
 /**
  * Increment/decrement number under cursor
  */
@@ -1206,7 +1224,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../utils/action":69,"../utils/common":72}],11:[function(require,module,exports){
+},{"../utils/action":70,"../utils/common":73}],11:[function(require,module,exports){
 /**
  * Actions to insert line breaks. Some simple editors (like browser's 
  * &lt;textarea&gt;, for example) do not provide such simple things
@@ -1333,7 +1351,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/htmlMatcher":26,"../assets/preferences":28,"../assets/resources":31,"../utils/common":72,"../utils/editor":74}],12:[function(require,module,exports){
+},{"../assets/htmlMatcher":26,"../assets/preferences":28,"../assets/resources":31,"../utils/common":73,"../utils/editor":75}],12:[function(require,module,exports){
 /**
  * Module describes and performs Emmet actions. The actions themselves are
  * defined in <i>actions</i> folder
@@ -1574,7 +1592,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../utils/common":72,"./balance":5,"./base64":6,"./editPoints":7,"./evaluateMath":8,"./expandAbbreviation":9,"./incrementDecrement":10,"./lineBreaks":11,"./mergeLines":13,"./reflectCSSValue":14,"./removeTag":15,"./selectItem":16,"./selectLine":17,"./splitJoinTag":18,"./toggleComment":19,"./updateImageSize":20,"./updateTag":21,"./wrapWithAbbreviation":22}],13:[function(require,module,exports){
+},{"../utils/common":73,"./balance":5,"./base64":6,"./editPoints":7,"./evaluateMath":8,"./expandAbbreviation":9,"./incrementDecrement":10,"./lineBreaks":11,"./mergeLines":13,"./reflectCSSValue":14,"./removeTag":15,"./selectItem":16,"./selectLine":17,"./splitJoinTag":18,"./toggleComment":19,"./updateImageSize":20,"./updateTag":21,"./wrapWithAbbreviation":22}],13:[function(require,module,exports){
 /**
  * Merges selected lines or lines between XHTML tag pairs
  * @param {Function} require
@@ -1627,7 +1645,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/htmlMatcher":26,"../assets/range":30,"../utils/common":72,"../utils/editor":74}],14:[function(require,module,exports){
+},{"../assets/htmlMatcher":26,"../assets/range":30,"../utils/common":73,"../utils/editor":75}],14:[function(require,module,exports){
 /**
  * Reflect CSS value: takes rule's value under caret and pastes it for the same 
  * rules with vendor prefixes
@@ -1829,7 +1847,7 @@ define(function(require, exports, module) {
 
 	return module.exports;
 });
-},{"../assets/handlerList":25,"../assets/preferences":28,"../editTree/css":37,"../resolver/css":63,"../resolver/cssGradient":64,"../utils/action":69,"../utils/common":72,"../utils/editor":74}],15:[function(require,module,exports){
+},{"../assets/handlerList":25,"../assets/preferences":28,"../editTree/css":37,"../resolver/css":64,"../resolver/cssGradient":65,"../utils/action":70,"../utils/common":73,"../utils/editor":75}],15:[function(require,module,exports){
 /**
  * Gracefully removes tag under cursor
  */
@@ -1875,7 +1893,7 @@ define(function(require, exports, module) {
 	};
 });
 
-},{"../assets/htmlMatcher":26,"../utils/common":72,"../utils/editor":74}],16:[function(require,module,exports){
+},{"../assets/htmlMatcher":26,"../utils/common":73,"../utils/editor":75}],16:[function(require,module,exports){
 /**
  * Actions that use stream parsers and tokenizers for traversing:
  * -- Search for next/previous items in HTML
@@ -2330,7 +2348,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/range":30,"../assets/stringStream":32,"../editTree/css":37,"../parser/xml":61,"../utils/action":69,"../utils/common":72,"../utils/cssSections":73,"../utils/editor":74}],17:[function(require,module,exports){
+},{"../assets/range":30,"../assets/stringStream":32,"../editTree/css":37,"../parser/xml":62,"../utils/action":70,"../utils/common":73,"../utils/cssSections":74,"../utils/editor":75}],17:[function(require,module,exports){
 /**
  * Select current line (for simple editors like browser's &lt;textarea&gt;)
  */
@@ -2423,7 +2441,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/htmlMatcher":26,"../assets/profile":29,"../assets/resources":31,"../utils/common":72,"../utils/editor":74}],19:[function(require,module,exports){
+},{"../assets/htmlMatcher":26,"../assets/profile":29,"../assets/resources":31,"../utils/common":73,"../utils/editor":75}],19:[function(require,module,exports){
 /**
  * Toggles HTML and CSS comments depending on current caret context. Unlike
  * the same action in most editors, this action toggles comment on currently
@@ -2644,7 +2662,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/htmlMatcher":26,"../assets/preferences":28,"../assets/range":30,"../editTree/css":37,"../utils/action":69,"../utils/common":72,"../utils/editor":74}],20:[function(require,module,exports){
+},{"../assets/htmlMatcher":26,"../assets/preferences":28,"../assets/range":30,"../editTree/css":37,"../utils/action":70,"../utils/common":73,"../utils/editor":75}],20:[function(require,module,exports){
 /**
  * Automatically updates image size attributes in HTML's &lt;img&gt; element or
  * CSS rule
@@ -2764,7 +2782,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../editTree/css":37,"../editTree/xml":38,"../plugin/file":62,"../utils/action":69,"../utils/base64":70,"../utils/common":72,"../utils/editor":74}],21:[function(require,module,exports){
+},{"../editTree/css":37,"../editTree/xml":38,"../plugin/file":63,"../utils/action":70,"../utils/base64":71,"../utils/common":73,"../utils/editor":75}],21:[function(require,module,exports){
 /**
  * Update Tag action: allows users to update existing HTML tags and add/remove
  * attributes or even tag name
@@ -2908,7 +2926,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../editTree/xml":38,"../parser/abbreviation":54,"../utils/action":69,"../utils/common":72,"../utils/editor":74}],22:[function(require,module,exports){
+},{"../editTree/xml":38,"../parser/abbreviation":55,"../utils/action":70,"../utils/common":73,"../utils/editor":75}],22:[function(require,module,exports){
 /**
  * Action that wraps content with abbreviation. For convenience, action is 
  * defined as reusable module
@@ -2974,7 +2992,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/htmlMatcher":26,"../assets/range":30,"../parser/abbreviation":54,"../utils/action":69,"../utils/common":72,"../utils/editor":74}],23:[function(require,module,exports){
+},{"../assets/htmlMatcher":26,"../assets/range":30,"../parser/abbreviation":55,"../utils/action":70,"../utils/common":73,"../utils/editor":75}],23:[function(require,module,exports){
 /**
  * Parsed resources (snippets, abbreviations, variables, etc.) for Emmet.
  * Contains convenient method to get access for snippets with respect of 
@@ -3226,7 +3244,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../utils/common":72,"./preferences":28}],24:[function(require,module,exports){
+},{"../utils/common":73,"./preferences":28}],24:[function(require,module,exports){
 /**
  * Module that contains factories for element types used by Emmet
  */
@@ -3470,7 +3488,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../utils/common":72}],26:[function(require,module,exports){
+},{"../utils/common":73}],26:[function(require,module,exports){
 /**
  * HTML matcher: takes string and searches for HTML tag pairs for given position 
  * 
@@ -4029,7 +4047,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../utils/common":72}],29:[function(require,module,exports){
+},{"../utils/common":73}],29:[function(require,module,exports){
 /**
  * Output profile module.
  * Profile defines how XHTML output data should look like
@@ -4303,7 +4321,7 @@ define(function(require, exports, module) {
 		stringCase: stringCase
 	};
 });
-},{"../utils/common":72,"./preferences":28,"./resources":31}],30:[function(require,module,exports){
+},{"../utils/common":73,"./preferences":28,"./resources":31}],30:[function(require,module,exports){
 /**
  * Helper module to work with ranges
  */
@@ -4981,7 +4999,7 @@ define(function(require, exports, module) {
 
 	return exports;
 });
-},{"../assets/logger":27,"../resolver/css":63,"../utils/common":72,"../vendor/stringScore":78,"./elements":24,"./handlerList":25}],32:[function(require,module,exports){
+},{"../assets/logger":27,"../resolver/css":64,"../utils/common":73,"../vendor/stringScore":79,"./elements":24,"./handlerList":25}],32:[function(require,module,exports){
 /**
  * A trimmed version of CodeMirror's StringStream module for string parsing
  */
@@ -5603,7 +5621,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../utils/common":72,"./resources":31,"./stringStream":32}],34:[function(require,module,exports){
+},{"../utils/common":73,"./resources":31,"./stringStream":32}],34:[function(require,module,exports){
 /**
  * Helper class for convenient token iteration
  */
@@ -31296,7 +31314,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/range":30,"../utils/common":72,"../vendor/klass":77}],37:[function(require,module,exports){
+},{"../assets/range":30,"../utils/common":73,"../vendor/klass":78}],37:[function(require,module,exports){
 /**
  * CSS EditTree is a module that can parse a CSS rule into a tree with 
  * convenient methods for adding, modifying and removing CSS properties. These 
@@ -31910,7 +31928,7 @@ define(function(require, exports, module) {
 		extractPropertiesFromSource: extractPropertiesFromSource
 	};
 });
-},{"../assets/range":30,"../assets/stringStream":32,"../assets/tokenIterator":34,"../parser/css":55,"../utils/common":72,"../utils/cssSections":73,"./base":36}],38:[function(require,module,exports){
+},{"../assets/range":30,"../assets/stringStream":32,"../assets/tokenIterator":34,"../parser/css":56,"../utils/common":73,"../utils/cssSections":74,"./base":36}],38:[function(require,module,exports){
 /**
  * XML EditTree is a module that can parse an XML/HTML element into a tree with 
  * convenient methods for adding, modifying and removing attributes. These 
@@ -32200,7 +32218,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/range":30,"../parser/xml":61,"../utils/common":72,"./base":36}],39:[function(require,module,exports){
+},{"../assets/range":30,"../parser/xml":62,"../utils/common":73,"./base":36}],39:[function(require,module,exports){
 if (typeof module === 'object' && typeof define !== 'function') {
 	var define = function (factory) {
 		module.exports = factory(require, exports, module);
@@ -32488,7 +32506,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"./action/main":12,"./assets/caniuse":23,"./assets/htmlMatcher":26,"./assets/logger":27,"./assets/preferences":28,"./assets/profile":29,"./assets/resources":31,"./assets/tabStops":33,"./parser/abbreviation":54,"./plugin/file":62,"./utils/action":69,"./utils/common":72,"./utils/editor":74}],40:[function(require,module,exports){
+},{"./action/main":12,"./assets/caniuse":23,"./assets/htmlMatcher":26,"./assets/logger":27,"./assets/preferences":28,"./assets/profile":29,"./assets/resources":31,"./assets/tabStops":33,"./parser/abbreviation":55,"./plugin/file":63,"./utils/action":70,"./utils/common":73,"./utils/editor":75}],40:[function(require,module,exports){
 /**
  * Filter for aiding of writing elements with complex class names as described
  * in Yandex's BEM (Block, Element, Modifier) methodology. This filter will
@@ -32751,7 +32769,7 @@ define(function(require, exports, module) {
 		return tree;
 	};
 });
-},{"../assets/preferences":28,"../utils/abbreviation":68,"../utils/common":72,"./html":46}],41:[function(require,module,exports){
+},{"../assets/preferences":28,"../utils/abbreviation":69,"../utils/common":73,"./html":46}],41:[function(require,module,exports){
 /**
  * Comment important tags (with 'id' and 'class' attributes)
  */
@@ -32861,7 +32879,7 @@ define(function(require, exports, module) {
 	};
 });
 
-},{"../assets/preferences":28,"../utils/abbreviation":68,"../utils/common":72,"../utils/template":76,"./main":48}],42:[function(require,module,exports){
+},{"../assets/preferences":28,"../utils/abbreviation":69,"../utils/common":73,"../utils/template":77,"./main":49}],42:[function(require,module,exports){
 /**
  * Filter for outputting CSS and alike
  */
@@ -33136,7 +33154,7 @@ define(function(require, exports, module) {
 		return tree;
 	};
 });
-},{"../assets/preferences":28,"../assets/resources":31,"../utils/abbreviation":68,"../utils/common":72}],45:[function(require,module,exports){
+},{"../assets/preferences":28,"../assets/resources":31,"../utils/abbreviation":69,"../utils/common":73}],45:[function(require,module,exports){
 /**
  * Filter for producing HAML code from abbreviation.
  */
@@ -33294,7 +33312,7 @@ define(function(require, exports, module) {
 		return tree;
 	};
 });
-},{"../utils/abbreviation":68,"../utils/common":72,"./format":44}],46:[function(require,module,exports){
+},{"../utils/abbreviation":69,"../utils/common":73,"./format":44}],46:[function(require,module,exports){
 /**
  * Filter that produces HTML tree
  */
@@ -33396,7 +33414,7 @@ define(function(require, exports, module) {
 		return tree;
 	};
 });
-},{"../assets/tabStops":33,"../utils/abbreviation":68,"../utils/common":72,"./format":44}],47:[function(require,module,exports){
+},{"../assets/tabStops":33,"../utils/abbreviation":69,"../utils/common":73,"./format":44}],47:[function(require,module,exports){
 /**
  * Filter for producing Jade code from abbreviation.
  */
@@ -33547,7 +33565,38 @@ define(function(require, exports, module) {
 		return tree;
 	};
 });
-},{"../assets/profile":29,"../assets/tabStops":33,"../utils/abbreviation":68,"../utils/common":72,"./format":44}],48:[function(require,module,exports){
+},{"../assets/profile":29,"../assets/tabStops":33,"../utils/abbreviation":69,"../utils/common":73,"./format":44}],48:[function(require,module,exports){
+/**
+ * A filter for React.js (JSX):
+ * ranames attributes like `class` and `for`
+ * for proper representation in JSX
+ */
+if (typeof module === 'object' && typeof define !== 'function') {
+	var define = function (factory) {
+		module.exports = factory(require, exports, module);
+	};
+}
+
+define(function(require, exports, module) {
+	var attrMap = {
+		'class': 'className',
+		'for': 'htmlFor'
+	};
+
+	return function process(tree) {
+		tree.children.forEach(function(item) {
+			item._attributes.forEach(function(attr) {
+				if (attr.name in attrMap) {
+					attr.name = attrMap[attr.name]
+				}
+			});
+			process(item);
+		});
+
+		return tree;
+	};
+});
+},{}],49:[function(require,module,exports){
 /**
  * Module for handling filters
  */
@@ -33567,6 +33616,7 @@ define(function(require, exports, module) {
 		html: require('./html'),
 		haml: require('./haml'),
 		jade: require('./jade'),
+		jsx: require('./jsx'),
 		slim: require('./slim'),
 		xsl: require('./xsl'),
 		css: require('./css'),
@@ -33671,7 +33721,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/profile":29,"../assets/resources":31,"../utils/common":72,"./bem":40,"./comment":41,"./css":42,"./escape":43,"./haml":45,"./html":46,"./jade":47,"./singleLine":49,"./slim":50,"./trim":51,"./xsl":52}],49:[function(require,module,exports){
+},{"../assets/profile":29,"../assets/resources":31,"../utils/common":73,"./bem":40,"./comment":41,"./css":42,"./escape":43,"./haml":45,"./html":46,"./jade":47,"./jsx":48,"./singleLine":50,"./slim":51,"./trim":52,"./xsl":53}],50:[function(require,module,exports){
 /**
  * Output abbreviation on a single line (i.e. no line breaks)
  */
@@ -33706,7 +33756,7 @@ define(function(require, exports, module) {
 	};
 });
 
-},{"../utils/abbreviation":68}],50:[function(require,module,exports){
+},{"../utils/abbreviation":69}],51:[function(require,module,exports){
 /**
  * Filter for producing Jade code from abbreviation.
  */
@@ -33897,7 +33947,7 @@ define(function(require, exports, module) {
 		return tree;
 	};
 });
-},{"../assets/preferences":28,"../assets/profile":29,"../assets/tabStops":33,"../utils/abbreviation":68,"../utils/common":72,"./format":44}],51:[function(require,module,exports){
+},{"../assets/preferences":28,"../assets/profile":29,"../assets/tabStops":33,"../utils/abbreviation":69,"../utils/common":73,"./format":44}],52:[function(require,module,exports){
 /**
  * Trim filter: removes characters at the beginning of the text
  * content that indicates lists: numbers, #, *, -, etc.
@@ -33937,7 +33987,7 @@ define(function(require, exports, module) {
 	};
 });
 
-},{"../assets/preferences":28}],52:[function(require,module,exports){
+},{"../assets/preferences":28}],53:[function(require,module,exports){
 /**
  * Filter for trimming "select" attributes from some tags that contains
  * child elements
@@ -33976,7 +34026,7 @@ define(function(require, exports, module) {
 		return tree;
 	};
 });
-},{"../utils/abbreviation":68}],53:[function(require,module,exports){
+},{"../utils/abbreviation":69}],54:[function(require,module,exports){
 /**
  * "Lorem ipsum" text generator. Matches <code>lipsum(num)?</code> or 
  * <code>lorem(num)?</code> abbreviation.
@@ -34264,7 +34314,7 @@ define(function(require, exports, module) {
 	};
 });
 
-},{"../assets/preferences":28}],54:[function(require,module,exports){
+},{"../assets/preferences":28}],55:[function(require,module,exports){
 /**
  * Emmet abbreviation parser.
  * Takes string abbreviation and recursively parses it into a tree. The parsed 
@@ -35314,7 +35364,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/profile":29,"../assets/stringStream":32,"../assets/tabStops":33,"../filter/main":48,"../generator/lorem":53,"../utils/abbreviation":68,"../utils/common":72,"./processor/attributes":56,"./processor/href":57,"./processor/pastedContent":58,"./processor/resourceMatcher":59,"./processor/tagName":60}],55:[function(require,module,exports){
+},{"../assets/profile":29,"../assets/stringStream":32,"../assets/tabStops":33,"../filter/main":49,"../generator/lorem":54,"../utils/abbreviation":69,"../utils/common":73,"./processor/attributes":57,"./processor/href":58,"./processor/pastedContent":59,"./processor/resourceMatcher":60,"./processor/tagName":61}],56:[function(require,module,exports){
 if (typeof module === 'object' && typeof define !== 'function') {
 	var define = function (factory) {
 		module.exports = factory(require, exports, module);
@@ -35746,7 +35796,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 /**
  * Resolves node attribute names: moves `default` attribute value
  * from stub to real attribute.
@@ -35828,7 +35878,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../../utils/common":72}],57:[function(require,module,exports){
+},{"../../utils/common":73}],58:[function(require,module,exports){
 /**
  * A preptocessor for &lt;a&gt; tag: tests wrapped content
  * for common URL patterns and, if matched, inserts it as 
@@ -35895,7 +35945,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../../assets/preferences":28,"../../utils/common":72,"./pastedContent":58}],58:[function(require,module,exports){
+},{"../../assets/preferences":28,"../../utils/common":73,"./pastedContent":59}],59:[function(require,module,exports){
 /**
  * Pasted content abbreviation processor. A pasted content is a content that
  * should be inserted into implicitly repeated abbreviation nodes.
@@ -36063,7 +36113,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../../assets/range":30,"../../assets/stringStream":32,"../../utils/abbreviation":68,"../../utils/common":72}],59:[function(require,module,exports){
+},{"../../assets/range":30,"../../assets/stringStream":32,"../../utils/abbreviation":69,"../../utils/common":73}],60:[function(require,module,exports){
 /**
  * Processor function that matches parsed <code>AbbreviationNode</code>
  * against resources defined in <code>resource</code> module
@@ -36167,7 +36217,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../../assets/elements":24,"../../assets/resources":31,"../../utils/abbreviation":68,"../../utils/common":72}],60:[function(require,module,exports){
+},{"../../assets/elements":24,"../../assets/resources":31,"../../utils/abbreviation":69,"../../utils/common":73}],61:[function(require,module,exports){
 /**
  * Resolves tag names in abbreviations with implied name
  */
@@ -36200,7 +36250,7 @@ define(function(require, exports, module) {
 		postprocessor: resolveNodeNames
 	};
 });
-},{"../../resolver/tagName":66}],61:[function(require,module,exports){
+},{"../../resolver/tagName":67}],62:[function(require,module,exports){
 /**
  * HTML tokenizer by Marijn Haverbeke
  * http://codemirror.net/
@@ -36543,7 +36593,7 @@ define(function(require, exports, module) {
 	};
 });
 
-},{"../assets/stringStream":32}],62:[function(require,module,exports){
+},{"../assets/stringStream":32}],63:[function(require,module,exports){
 /**
  * Module for working with file. Shall implement
  * IEmmetFile interface.
@@ -36753,7 +36803,7 @@ define(function(require, exports, module) {
 	
 	});
 });
-},{"../utils/common":72}],63:[function(require,module,exports){
+},{"../utils/common":73}],64:[function(require,module,exports){
 /**
  * Resolver for fast CSS typing. Handles abbreviations with the following 
  * notation:<br>
@@ -37692,7 +37742,7 @@ define(function(require, exports, module) {
 
 	return module.exports;
 });
-},{"../assets/caniuse":23,"../assets/preferences":28,"../assets/resources":31,"../assets/stringStream":32,"../editTree/css":37,"../utils/common":72,"../utils/template":76}],64:[function(require,module,exports){
+},{"../assets/caniuse":23,"../assets/preferences":28,"../assets/resources":31,"../assets/stringStream":32,"../editTree/css":37,"../utils/common":73,"../utils/template":77}],65:[function(require,module,exports){
 /**
  * 'Expand Abbreviation' handler that parses gradient definition from under 
  * cursor and updates CSS rule with vendor-prefixed values.
@@ -38212,7 +38262,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/preferences":28,"../assets/range":30,"../assets/resources":31,"../assets/stringStream":32,"../editTree/css":37,"../utils/common":72,"../utils/editor":74,"./css":63,"./gradient/linear":65}],65:[function(require,module,exports){
+},{"../assets/preferences":28,"../assets/range":30,"../assets/resources":31,"../assets/stringStream":32,"../editTree/css":37,"../utils/common":73,"../utils/editor":75,"./css":64,"./gradient/linear":66}],66:[function(require,module,exports){
 /**
  * CSS linear gradient definition
  */
@@ -38547,7 +38597,7 @@ define(function(require, exports, module) {
 		stringifyDirection: stringifyDirection
 	};
 });
-},{"../../assets/stringStream":32,"../../utils/common":72}],66:[function(require,module,exports){
+},{"../../assets/stringStream":32,"../../utils/common":73}],67:[function(require,module,exports){
 /**
  * Module for resolving tag names: returns best matched tag name for child
  * element based on passed parent's tag name. Also provides utility function
@@ -38708,7 +38758,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../utils/common":72}],67:[function(require,module,exports){
+},{"../utils/common":73}],68:[function(require,module,exports){
 module.exports={
 	"variables": {
 		"lang": "en",
@@ -39631,6 +39681,12 @@ module.exports={
 		"profile": "xml"
 	},
 
+	"jsx": {
+		"filters": "jsx, html",
+		"extends": "html",
+		"profile": "xml"
+	},
+
 	"slim": {
 		"filters": "slim",
 		"extends": "html",
@@ -39658,7 +39714,7 @@ module.exports={
 	}
 }
 
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 /**
  * Utility functions to work with <code>AbbreviationNode</code> as HTML element
  * @param {Function} require
@@ -39778,7 +39834,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/elements":24,"../assets/tabStops":33,"../resolver/tagName":66,"../utils/common":72}],69:[function(require,module,exports){
+},{"../assets/elements":24,"../assets/tabStops":33,"../resolver/tagName":67,"../utils/common":73}],70:[function(require,module,exports){
 /**
  * Utility methods for Emmet actions
  * @author Sergey Chikuyonok (serge.che@gmail.com) <http://chikuyonok.ru>
@@ -40118,7 +40174,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/htmlMatcher":26,"../assets/range":30,"../assets/resources":31,"../editTree/xml":38,"../parser/abbreviation":54,"./common":72,"./cssSections":73}],70:[function(require,module,exports){
+},{"../assets/htmlMatcher":26,"../assets/range":30,"../assets/resources":31,"../editTree/xml":38,"../parser/abbreviation":55,"./common":73,"./cssSections":74}],71:[function(require,module,exports){
 /**
  * @author Sergey Chikuyonok (serge.che@gmail.com)
  * @link http://chikuyonok.ru
@@ -40213,7 +40269,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 /**
  * Utility module for working with comments in source code
  * (mostly stripping it from source)
@@ -40281,7 +40337,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../assets/range":30,"../assets/stringStream":32,"./common":72}],72:[function(require,module,exports){
+},{"../assets/range":30,"../assets/stringStream":32,"./common":73}],73:[function(require,module,exports){
 /**
  * Common utility helper for Emmet
  */
@@ -40967,7 +41023,7 @@ define(function(require, exports, module) {
 	};
 });
 
-},{"../assets/range":30}],73:[function(require,module,exports){
+},{"../assets/range":30}],74:[function(require,module,exports){
 if (typeof module === 'object' && typeof define !== 'function') {
 	var define = function (factory) {
 		module.exports = factory(require, exports, module);
@@ -41500,7 +41556,7 @@ define(function(require, exports, module) {
 		CSSSection: CSSSection
 	};
 });
-},{"../assets/htmlMatcher":26,"../assets/range":30,"../assets/stringStream":32,"../editTree/xml":38,"../parser/css":55,"./comments":71,"./common":72}],74:[function(require,module,exports){
+},{"../assets/htmlMatcher":26,"../assets/range":30,"../assets/stringStream":32,"../editTree/xml":38,"../parser/css":56,"./comments":72,"./common":73}],75:[function(require,module,exports){
 /**
  * Utility module used to prepare text for pasting into back-end editor
  * @author Sergey Chikuyonok (serge.che@gmail.com) <http://chikuyonok.ru>
@@ -41597,7 +41653,6 @@ define(function(require, exports, module) {
 				indentation: resources.getVariable('indentation')
 			}, options);
 
-			var reIndent = /^\t+/;
 			var indent = function(tabs) {
 				return utils.repeatString(options.indentation, tabs.length);
 			};
@@ -41607,7 +41662,9 @@ define(function(require, exports, module) {
 			// normailze indentation if it’s not tabs
 			if (options.indentation !== '\t') {
 				lines = lines.map(function(line) {
-					return line.replace(reIndent, indent);
+					return line.replace(/^\s+/, function(space) {
+						return space.replace(/\t/g, indent);
+					});
 				});
 			}
 
@@ -41617,7 +41674,7 @@ define(function(require, exports, module) {
 	};
 });
 
-},{"../assets/resources":31,"./common":72}],75:[function(require,module,exports){
+},{"../assets/resources":31,"./common":73}],76:[function(require,module,exports){
 if (typeof module === 'object' && typeof define !== 'function') {
 	var define = function (factory) {
 		module.exports = factory(require, exports, module);
@@ -42530,7 +42587,7 @@ define(function(require, exports, module) {
 
 	return Parser;
 });
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 /**
  * A very simple, ERB-style templating. Basically, just as string substitution.
  * The reason to not use default Lo-dash’es `_.template()` implementation
@@ -42631,7 +42688,7 @@ define(function(require, exports, module) {
 		};
 	};
 });
-},{"../assets/stringStream":32,"./common":72}],77:[function(require,module,exports){
+},{"../assets/stringStream":32,"./common":73}],78:[function(require,module,exports){
 if (typeof module === 'object' && typeof define !== 'function') {
 	var define = function (factory) {
 		module.exports = factory(require, exports, module);
@@ -42715,7 +42772,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{"../utils/common":72}],78:[function(require,module,exports){
+},{"../utils/common":73}],79:[function(require,module,exports){
 /*!
  * string_score.js: String Scoring Algorithm 0.1.10 
  *
@@ -42841,7 +42898,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 "use strict";
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
@@ -43019,5 +43076,5 @@ function systemKeymap(keymap) {
 	});
 	return out;
 }
-},{"./editor":1,"./emmet":2}]},{},[79])(79)
+},{"./editor":1,"./emmet":2}]},{},[80])(80)
 });

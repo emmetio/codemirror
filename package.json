@@ -1,6 +1,6 @@
 {
   "name": "emmet-codemirror",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Emmet plugin for CodeMirror",
   "main": "./dist/emmet.js",
   "scripts": {
@@ -26,12 +26,12 @@
   },
   "homepage": "https://github.com/emmetio/codemirror",
   "dependencies": {
-    "emmet": "^1.2.4"
+    "emmet": "^1.3.0"
   },
   "devDependencies": {
     "codemirror": "^5.0.0",
     "gulp": "^3.8.11",
     "gulp-rename": "^1.2.0",
-    "js-bundler": "git+https://github.com/sergeche/js-bundler.git#v1.0.0"
+    "js-bundler": "git+https://github.com/sergeche/js-bundler.git#v1.0.1"
   }
 }
