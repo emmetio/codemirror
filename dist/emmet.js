@@ -32273,7 +32273,7 @@ define(function(require, exports, module) {
 
 		return profile;
 	}
-	
+
 	return {
 		/**
 		 * The essential function that expands Emmet abbreviation
@@ -32306,11 +32306,11 @@ define(function(require, exports, module) {
 		 * Loads Emmet extensions. Extensions are simple .js files that
 		 * uses Emmet modules and resources to create new actions, modify
 		 * existing ones etc.
-		 * @param {Array} fileList List of absolute paths to files in extensions 
-		 * folder. Back-end app should not filter this list (e.g. by extension) 
-		 * but return it "as-is" so bootstrap can decide how to load contents 
+		 * @param {Array} fileList List of absolute paths to files in extensions
+		 * folder. Back-end app should not filter this list (e.g. by extension)
+		 * but return it "as-is" so bootstrap can decide how to load contents
 		 * of each file.
-		 * This method requires a <code>file</code> module of <code>IEmmetFile</code> 
+		 * This method requires a <code>file</code> module of <code>IEmmetFile</code>
 		 * interface to be implemented.
 		 * @memberOf bootstrap
 		 */
@@ -32334,7 +32334,7 @@ define(function(require, exports, module) {
 							logger.log('Unable to read "' + f + '" file: '+ err);
 							return next();
 						}
-												
+
 						switch (file.getExt(f)) {
 							case 'js':
 								try {
@@ -32345,20 +32345,21 @@ define(function(require, exports, module) {
 								break;
 							case 'json':
 								var fileName = getFileName(f).toLowerCase().replace(/\.json$/, '');
+								content = utils.parseJSON(content);
 								if (/^snippets/.test(fileName)) {
 									if (fileName === 'snippets') {
 										// data in snippets.json is more important to user
-										userSnippets = utils.parseJSON(content);
+										userSnippets = content;
 									} else {
-										payload.snippets = utils.deepMerge(payload.snippets || {}, utils.parseJSON(content));
+										payload.snippets = utils.deepMerge(payload.snippets || {}, content);
 									}
 								} else {
 									payload[fileName] = content;
 								}
-								
+
 								break;
 						}
-						
+
 						next();
 					});
 				} else {
@@ -32366,14 +32367,14 @@ define(function(require, exports, module) {
 					if (userSnippets) {
 						payload.snippets = utils.deepMerge(payload.snippets || {}, userSnippets);
 					}
-					
+
 					that.loadUserData(payload);
 				}
 			};
-			
+
 			next();
 		},
-		
+
 		/**
 		 * Loads preferences from JSON object (or string representation of JSON)
 		 * @param {Object} data
@@ -32382,20 +32383,20 @@ define(function(require, exports, module) {
 		loadPreferences: function(data) {
 			preferences.load(utils.parseJSON(data));
 		},
-		
+
 		/**
 		 * Loads user snippets and abbreviations. It doesn’t replace current
-		 * user resource vocabulary but merges it with passed one. If you need 
-		 * to <i>replaces</i> user snippets you should call 
+		 * user resource vocabulary but merges it with passed one. If you need
+		 * to <i>replaces</i> user snippets you should call
 		 * <code>resetSnippets()</code> method first
 		 */
 		loadSnippets: function(data) {
 			data = utils.parseJSON(data);
-			
+
 			var userData = resources.getVocabulary('user') || {};
 			resources.setVocabulary(utils.deepMerge(userData, data), 'user');
 		},
-		
+
 		/**
 		 * Helper function that loads default snippets, defined in project’s
 		 * <i>snippets.json</i>
@@ -32412,17 +32413,17 @@ define(function(require, exports, module) {
 		loadCIU: function(data) {
 			ciu.load(utils.parseJSON(data));
 		},
-		
+
 		/**
 		 * Removes all user-defined snippets
 		 */
 		resetSnippets: function() {
 			resources.setVocabulary({}, 'user');
 		},
-		
+
 		/**
 		 * Helper function that loads all user data (snippets and preferences)
-		 * defined as a single JSON object. This is useful for loading data 
+		 * defined as a single JSON object. This is useful for loading data
 		 * stored in a common storage, for example <code>NSUserDefaults</code>
 		 * @param {Object} data
 		 */
@@ -32431,11 +32432,11 @@ define(function(require, exports, module) {
 			if (data.snippets) {
 				this.loadSnippets(data.snippets);
 			}
-			
+
 			if (data.preferences) {
 				this.loadPreferences(data.preferences);
 			}
-			
+
 			if (data.profiles) {
 				this.loadProfiles(data.profiles);
 			}
@@ -32443,13 +32444,13 @@ define(function(require, exports, module) {
 			if (data.caniuse) {
 				this.loadCIU(data.caniuse);
 			}
-			
+
 			var profiles = data.syntaxProfiles || data.syntaxprofiles;
 			if (profiles) {
 				this.loadSyntaxProfiles(profiles);
 			}
 		},
-		
+
 		/**
 		 * Resets all user-defined data: preferences, snippets etc.
 		 * @returns
@@ -32459,10 +32460,10 @@ define(function(require, exports, module) {
 			preferences.reset();
 			profile.reset();
 		},
-		
+
 		/**
-		 * Load syntax-specific output profiles. These are essentially 
-		 * an extension to syntax snippets 
+		 * Load syntax-specific output profiles. These are essentially
+		 * an extension to syntax snippets
 		 * @param {Object} profiles Dictionary of profiles
 		 */
 		loadSyntaxProfiles: function(profiles) {
@@ -32475,10 +32476,10 @@ define(function(require, exports, module) {
 				}
 				snippets[syntax].profile = normalizeProfile(options);
 			});
-			
+
 			this.loadSnippets(snippets);
 		},
-		
+
 		/**
 		 * Load named profiles
 		 * @param {Object} profiles
@@ -32493,6 +32494,7 @@ define(function(require, exports, module) {
 
 		// expose some useful data for plugin authors
 		actions: actions,
+		parser: parser,
 		file: file,
 		preferences: preferences,
 		resources: resources,
@@ -32506,6 +32508,7 @@ define(function(require, exports, module) {
 		}
 	};
 });
+
 },{"./action/main":12,"./assets/caniuse":23,"./assets/htmlMatcher":26,"./assets/logger":27,"./assets/preferences":28,"./assets/profile":29,"./assets/resources":31,"./assets/tabStops":33,"./parser/abbreviation":55,"./plugin/file":63,"./utils/action":70,"./utils/common":73,"./utils/editor":75}],40:[function(require,module,exports){
 /**
  * Filter for aiding of writing elements with complex class names as described
@@ -41439,7 +41442,7 @@ define(function(require, exports, module) {
 
 			for (var i = 0, il = rules.length; i < il; i++) {
 				if (rules[i].start > pos) {
-					return rules[isBackward ? i - 1 : i].shift(offset);
+					return rules[isBackward && i > 0 ? i - 1 : i].shift(offset);
 				}
 			}
 		},
