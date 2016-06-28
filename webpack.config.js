@@ -20,5 +20,10 @@ module.exports = {
             test: /\.json$/,
             loader: 'json'
         }]
+    },
+    node: {
+        globals: false,
+        process: false,
+        Buffer: false
     }
 };

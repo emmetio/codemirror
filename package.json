@@ -5,7 +5,7 @@
   "main": "./dist/emmet.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "./node_modules/.bin/gulp"
+    "prepublish": "gulp"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/emmetio/codemirror",
   "dependencies": {
-    "emmet": "^1.3.0"
+    "emmet": "^1.5.0"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",
