@@ -30,7 +30,7 @@ var defaultKeymap = {
 	'Shift-Cmd-.': 'emmet.select_next_item',
 	'Shift-Cmd-,': 'emmet.select_previous_item',
 	'Cmd-B': 'emmet.reflect_css_value',
-	
+
 	'Enter': 'emmet.insert_formatted_line_break_only'
 };
 
@@ -65,6 +65,10 @@ main.systemKeymap = systemKeymap;
 main.emmet = emmet;
 main.EmmetEditor = EmmetEditor;
 main.setup = function(CodeMirror) {
+	// Store reference to CodeMirror for future reference in
+	// in methods below that access it globally.
+	window.CodeMirror = CodeMirror;
+
 	// setup default Emmet actions
 	emmet.actions.getList().forEach(obj => {
 		var action = obj.name;
@@ -86,15 +90,11 @@ main.setup = function(CodeMirror) {
 	}
 };
 
-if (typeof CodeMirror !== 'undefined') {
-	main.setup(CodeMirror);
-}
-
 function noop() {
 	if (CodeMirror.version >= '3.1') {
 		return CodeMirror.Pass;
 	}
-	
+
 	throw CodeMirror.Pass;
 }
 
@@ -149,7 +149,7 @@ function runAction(name, editor) {
 		// pass through Tab key handler if there's a selection
 		return noop();
 	}
-	
+
 	var result = false;
 	try {
 		result = emmet.run(name, editor);

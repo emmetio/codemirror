@@ -2,10 +2,11 @@
   "name": "emmet-codemirror",
   "version": "1.2.5",
   "description": "Emmet plugin for CodeMirror",
-  "main": "./dist/emmet.js",
+  "main": "./dist/emmet-wp.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "gulp"
+    "prepublish": "gulp",
+    "dist": "NODE_ENV=production webpack --config ./webpack.config.js -p"
   },
   "repository": {
     "type": "git",
