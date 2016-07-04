@@ -17907,6 +17907,10 @@ main.systemKeymap = systemKeymap;
 main.emmet = emmet;
 main.EmmetEditor = EmmetEditor;
 main.setup = function (CodeMirror) {
+	// Store reference to CodeMirror for future reference in
+	// in methods below that access it globally.
+	window.CodeMirror = CodeMirror;
+
 	// setup default Emmet actions
 	emmet.actions.getList().forEach(function (obj) {
 		var action = obj.name;
@@ -17925,10 +17929,6 @@ main.setup = function (CodeMirror) {
 		CodeMirror.defaults.profile = "html";
 	}
 };
-
-if (typeof CodeMirror !== "undefined") {
-	main.setup(CodeMirror);
-}
 
 function noop() {
 	if (CodeMirror.version >= "3.1") {
