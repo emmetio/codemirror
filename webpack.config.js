@@ -6,7 +6,7 @@ const p = file => path.resolve(__dirname, file);
 module.exports = {
     entry: './plugin.js',
     output: {
-        filename: 'emmet-wp.js',
+        filename: 'emmet.js',
         path: './dist',
         library: 'emmetCodeMirror',
         libraryTarget: 'umd'

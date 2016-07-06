@@ -8,12 +8,12 @@
 	<script src="../node_modules/codemirror/mode/css/css.js"></script>
 	<script src="../node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
 	<script src="./emmet.js"></script>
-	
+
 	<style>
 	.CodeMirror {
 		border: 1px solid black;
 	}
-	
+
 	.cm-delimit {
 		color: #fa4;
 	}
@@ -41,7 +41,7 @@
 			lineNumbers : true,
 			profile: 'xhtml' /* define Emmet output profile */
 		});
-		emmetCodeMirror(editor);
+		emmetCodeMirror.default(editor);
 	</script>
 </body>
 </html>

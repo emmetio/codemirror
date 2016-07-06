@@ -2,11 +2,10 @@
   "name": "emmet-codemirror",
   "version": "1.2.5",
   "description": "Emmet plugin for CodeMirror",
-  "main": "./dist/emmet-wp.js",
+  "main": "./dist/emmet.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "gulp",
-    "dist": "NODE_ENV=production webpack --config ./webpack.config.js -p"
+    "prepublish": "NODE_ENV=production webpack --config ./webpack.config.js -p"
   },
   "repository": {
     "type": "git",
@@ -34,9 +33,6 @@
     "babel-loader": "^6.2.4",
     "babel-preset-es2015": "^6.9.0",
     "codemirror": "^5.0.0",
-    "gulp": "^3.8.11",
-    "gulp-rename": "^1.2.0",
-    "js-bundler": "git+https://github.com/sergeche/js-bundler.git#v1.0.1",
     "json-loader": "^0.5.4",
     "webpack": "^1.13.1"
   }
