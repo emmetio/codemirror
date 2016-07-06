@@ -6,6 +6,8 @@ import emmet from './emmet';
 
 const actionBreak = {};
 
+export {emmet};
+
 // actions that should be performed in single selection mode
 const singleSelectionActions = [
 	'prev_edit_point', 'next_edit_point', 'merge_lines',
