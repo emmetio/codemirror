@@ -1,4 +1,4 @@
-# Deprecated: use [codemirro-plugin](https://github.com/emmetio/codemirror-plugin) instead with upcoming Emmet 2.0
+# Deprecated: use [codemirror-plugin](https://github.com/emmetio/codemirror-plugin) instead with upcoming Emmet 2.0
 
 ---
 
