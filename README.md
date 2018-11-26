@@ -1,4 +1,8 @@
-# Emmet plugin for CodeMirror 4.x+
+# Deprecated: use [codemirro-plugin](https://github.com/emmetio/codemirror-plugin) instead with upcoming Emmet 2.0
+
+---
+
+## Emmet plugin for CodeMirror 4.x+
 
 To add Emmet support for CodeMirror editor, simply add `dist/emmet.js` as a `<script>` tag into your HTML page right after CodeMirror script. This script creates global `emmetCodeMirror` function but also can be loaded as Require.JS module. You should pass CodeMirror editor instance to `emmetCodeMirror()` to add Emmet support.
 
