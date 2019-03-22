@@ -1,0 +1,23 @@
+{
+  "name": "emmetio-codemirror",
+  "private": false,
+  "description": "",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/emmetio/codemirror.git"
+  },
+  "author": {
+    "name": "",
+    "email": ""
+  },
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/emmetio/codemirror/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
